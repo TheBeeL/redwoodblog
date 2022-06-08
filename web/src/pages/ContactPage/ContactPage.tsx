@@ -31,7 +31,7 @@ interface FormValues {
 
 const ContactPage = () => {
   const formMethods = useForm()
-  const [create, { loading }] = useMutation<
+  const [create, { loading, error }] = useMutation<
     CreateContactMutation,
     CreateContactMutationVariables
   >(CREATE_CONTACT, {
@@ -51,7 +51,7 @@ const ContactPage = () => {
 
       <Toaster />
 
-      <Form onSubmit={onSubmit} formMethods={formMethods}>
+      <Form onSubmit={onSubmit} formMethods={formMethods} error={error}>
         <Label name="name" errorClassName="error"></Label>
         <TextField
           name="name"
