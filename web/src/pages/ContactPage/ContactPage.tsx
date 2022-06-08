@@ -1,6 +1,7 @@
 import {
   FieldError,
   Form,
+  FormError,
   Label,
   Submit,
   SubmitHandler,
@@ -52,6 +53,7 @@ const ContactPage = () => {
       <Toaster />
 
       <Form onSubmit={onSubmit} formMethods={formMethods} error={error}>
+        <FormError error={error} wrapperClassName="form-error" />
         <Label name="name" errorClassName="error"></Label>
         <TextField
           name="name"
