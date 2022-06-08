@@ -16,19 +16,15 @@ export const schema = gql`
     name: String!
     email: String!
     message: String!
-    created_at: DateTime!
   }
 
   input UpdateContactInput {
     name: String
     email: String
     message: String
-    created_at: DateTime
   }
 
   type Mutation {
-    createContact(input: CreateContactInput!): Contact! @requireAuth
-    updateContact(id: Int!, input: UpdateContactInput!): Contact! @requireAuth
-    deleteContact(id: Int!): Contact! @requireAuth
+    createContact(input: CreateContactInput!): Contact! @skipAuth
   }
 `
