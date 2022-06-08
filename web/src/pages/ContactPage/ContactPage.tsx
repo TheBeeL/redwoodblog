@@ -1,5 +1,7 @@
 import {
+  FieldError,
   Form,
+  Label,
   Submit,
   SubmitHandler,
   TextAreaField,
@@ -22,12 +24,39 @@ const ContactPage = () => {
       <MetaTags title="Contact" description="Contact page" />
 
       <Form onSubmit={onSubmit}>
-        <label>Name</label>
-        <TextField name="name" />
-        <label>EMail</label>
-        <TextField name="email" />
-        <label>Message</label>
-        <TextAreaField name="message" />
+        <Label name="name" errorClassName="error"></Label>
+        <TextField
+          name="name"
+          errorClassName="error"
+          validation={{ required: true }}
+        />
+        <FieldError name="name" className="error" />
+
+        <Label name="email" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          errorClassName="error"
+          validation={{
+            required: true,
+            pattern: {
+              value: /^[^@]+@[^.]+\..+$/,
+              message: 'Please enter a valid email address',
+            },
+          }}
+        />
+        <FieldError name="email" className="error" />
+
+        <Label name="message" errorClassName="error">
+          Message
+        </Label>
+        <TextAreaField
+          name="message"
+          errorClassName="error"
+          validation={{ required: true }}
+        />
+        <FieldError name="message" className="error" />
 
         <Submit>Send Messagge</Submit>
       </Form>
