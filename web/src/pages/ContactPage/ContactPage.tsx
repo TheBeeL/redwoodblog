@@ -7,7 +7,20 @@ import {
   TextAreaField,
   TextField,
 } from '@redwoodjs/forms'
-import { MetaTags } from '@redwoodjs/web'
+import { MetaTags, useMutation } from '@redwoodjs/web'
+import { toast, Toaster } from '@redwoodjs/web/dist/toast'
+import {
+  CreateContactMutation,
+  CreateContactMutationVariables,
+} from 'types/graphql'
+
+const CREATE_CONTACT = gql`
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    createContact(input: $input) {
+      id
+    }
+  }
+`
 
 interface FormValues {
   name: string
@@ -16,12 +29,24 @@ interface FormValues {
 }
 
 const ContactPage = () => {
+  const [create, { loading }] = useMutation<
+    CreateContactMutation,
+    CreateContactMutationVariables
+  >(CREATE_CONTACT, {
+    onCompleted: () => {
+      toast.success('Thank you for your message')
+    },
+  })
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data)
+    create({ variables: { input: data } })
   }
+
   return (
     <>
       <MetaTags title="Contact" description="Contact page" />
+
+      <Toaster />
 
       <Form onSubmit={onSubmit}>
         <Label name="name" errorClassName="error"></Label>
@@ -58,7 +83,7 @@ const ContactPage = () => {
         />
         <FieldError name="message" className="error" />
 
-        <Submit>Send Messagge</Submit>
+        <Submit disabled={loading}>Send Messagge</Submit>
       </Form>
     </>
   )
