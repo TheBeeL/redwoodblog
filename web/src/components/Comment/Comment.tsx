@@ -1,3 +1,10 @@
+const formatDate = (datetime: ConstructorParameters<typeof Date>[0]) => {
+  const parsedDate = new Date(datetime)
+  const month = parsedDate.toLocaleString('default', { month: 'long' })
+
+  return `${parsedDate.getDate()} ${month} ${parsedDate.getFullYear()}`
+}
+
 interface Props {
   comment: {
     name: string
@@ -8,10 +15,14 @@ interface Props {
 
 const Comment = ({ comment }: Props) => {
   return (
-    <div>
-      <h2>{comment.name}</h2>
-      <time dateTime={comment.createdAt}>{comment.createdAt}</time>
-      <p>{comment.body}</p>
+    <div className="bg-gray-200 p-8 rounded-lg">
+      <header className="flex justify-between">
+        <h2 className="font-semibold text-xl text-gray-700">{comment.name}</h2>
+        <time className="text-xs text-gray-500" dateTime={comment.createdAt}>
+          {formatDate(comment.createdAt)}
+        </time>
+      </header>
+      <p className="text-sm mt-2">{comment.body}</p>
     </div>
   )
 }
