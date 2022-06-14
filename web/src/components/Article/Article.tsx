@@ -9,7 +9,7 @@ const Article = ({ article }: Props) => {
   return (
     <article key={article.id}>
       <header>
-        <h2>
+        <h2 className="text-2xl font-bold text-blue-500">
           <Link to={routes.article({ id: article.id })}>{article.title}</Link>
         </h2>
       </header>
