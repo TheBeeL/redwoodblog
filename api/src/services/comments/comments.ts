@@ -4,6 +4,7 @@ import type {
   CommentResolvers,
   MutationResolvers,
 } from 'types/graphql'
+import { requireAuth } from '../../lib/auth'
 
 export const comments: QueryResolvers['comments'] = ({ postId }) => {
   return db.comment.findMany({ where: { postId } })
@@ -22,6 +23,7 @@ export const createComment: MutationResolvers['createComment'] = ({
 }
 
 export const deleteComment: MutationResolvers['deleteComment'] = ({ id }) => {
+  requireAuth({ roles: 'moderator' })
   return db.comment.delete({ where: { id } })
 }
 
