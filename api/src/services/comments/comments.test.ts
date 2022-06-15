@@ -1,5 +1,6 @@
 import { comments, createComment } from './comments'
 import type { StandardScenario, PostOnlyScenario } from './comments.scenarios'
+import { db } from 'api/src/lib/db'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -8,11 +9,18 @@ import type { StandardScenario, PostOnlyScenario } from './comments.scenarios'
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
 describe('comments', () => {
-  scenario('returns all comments', async (scenario: StandardScenario) => {
-    const result = await comments()
+  scenario(
+    'returns all comments for a single post from the database',
+    async (scenario: StandardScenario) => {
+      const result = await comments({ postId: scenario.comment.jane.postId })
+      const post = await db.post.findUnique({
+        where: { id: scenario.comment.jane.postId },
+        include: { comments: true },
+      })
 
-    expect(result.length).toEqual(Object.keys(scenario.comment).length)
-  })
+      expect(result.length).toEqual(post.comments.length)
+    }
+  )
 
   scenario(
     'postOnly',
