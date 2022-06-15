@@ -23,7 +23,7 @@ export const createComment: MutationResolvers['createComment'] = ({
 }
 
 export const deleteComment: MutationResolvers['deleteComment'] = ({ id }) => {
-  requireAuth({ roles: 'moderator' })
+  requireAuth({ roles: ['moderator', 'admin'] })
   return db.comment.delete({ where: { id } })
 }
 
