@@ -39,7 +39,7 @@ const CommentForm = ({ postId }: Props) => {
       setHasPosted(true)
       toast.success('Thank you for your comment!')
     },
-    refetchQueries: [{ query: CommentsQuery }],
+    refetchQueries: [{ query: CommentsQuery, variables: { postId } }],
   })
 
   const onSubmit: SubmitHandler<FormValues> = (input) => {

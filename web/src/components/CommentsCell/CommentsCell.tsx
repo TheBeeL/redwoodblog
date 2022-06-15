@@ -3,8 +3,8 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import Comment from '../Comment/Comment'
 
 export const QUERY = gql`
-  query CommentsQuery {
-    comments {
+  query CommentsQuery($postId: Int!) {
+    comments(postId: $postId) {
       id
       name
       body
