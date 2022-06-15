@@ -8,6 +8,8 @@ import {
   TextField,
 } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
+import { useState } from 'react'
 import { QUERY as CommentsQuery } from 'src/components/CommentsCell'
 
 const CREATE = gql`
@@ -31,7 +33,12 @@ interface Props {
 }
 
 const CommentForm = ({ postId }: Props) => {
+  const [hasPosted, setHasPosted] = useState(false)
   const [createComment, { loading, error }] = useMutation(CREATE, {
+    onCompleted: () => {
+      setHasPosted(true)
+      toast.success('Thank you for your comment!')
+    },
     refetchQueries: [{ query: CommentsQuery }],
   })
 
@@ -40,7 +47,7 @@ const CommentForm = ({ postId }: Props) => {
   }
 
   return (
-    <div>
+    <div className={hasPosted ? 'hidden' : ''}>
       <h3 className="font-light text-lg text-gray-600">Leave a Comment</h3>
       <Form className="mt-4 w-full" onSubmit={onSubmit}>
         <FormError
